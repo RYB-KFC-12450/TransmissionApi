@@ -3,7 +3,9 @@ class TransmissionApi::Client
   attr_accessor :url
   attr_accessor :basic_auth
   attr_accessor :fields
+  attr_accessor :session_fields
   attr_accessor :debug_mode
+  attr_accessor :with_extra
 
   TORRENT_FIELDS = [
     "id",
@@ -17,9 +19,101 @@ class TransmissionApi::Client
     "files"
   ]
 
+  TORRENT_EXTRA_FIELDS = [
+    "downloadDir",
+    "error",
+    "errorString",
+    "eta",
+    "isStalled",
+    "leftUntilDone",
+    "metadataPercentComplete",
+    "peersConnected",
+    "peersGettingFromUs",
+    "peersSendingToUs",
+    "queuePosition",
+    "recheckProgress",
+    "seedRatioLimit",
+    "seedRatioMode",
+    "sizeWhenDone",
+    "status",
+    "trackers",
+    "uploadRatio",
+    "uploadedEver",
+    "webseedsSendingToUs",
+    "id",
+    "activityDate",
+    "corruptEver",
+    "desiredAvailable",
+    "downloadedEver",
+    "fileStats",
+    "haveUnchecked",
+    "haveValid",
+    "peers",
+    "startDate",
+    "trackerStats"
+  ]
+
+  SESSION_FIELDS = [
+    "download-dir",
+    "download-dir-free-space",
+    "config-dir",
+    "peer-port",
+    "peer-port-random-on-start",
+    "speed-limit-down",
+    "speed-limit-down-enabled",
+    "speed-limit-up",
+    "speed-limit-up-enabled",
+  ]
+
+  SESSION_EXTRA_FIELDS = [
+    "alt-speed-down",
+    "alt-speed-enabled",
+    "alt-speed-time-begin",
+    "alt-speed-time-day",
+    "alt-speed-time-enabled",
+    "alt-speed-time-end",
+    "alt-speed-up",
+    "blocklist-enabled",
+    "blocklist-size",
+    "blocklist-url",
+    "cache-size-mb",
+    "dht-enabled",
+    "download-queue-enabled",
+    "download-queue-size",
+    "encryption",
+    "idle-seeding-limit",
+    "idle-seeding-limit-enabled",
+    "incomplete-dir",
+    "incomplete-dir-enabled",
+    "lpd-enabled",
+    "peer-limit-global",
+    "peer-limit-per-torrent",
+    "pex-enabled",
+    "port-forwarding-enabled",
+    "queue-stalled-enabled",
+    "queue-stalled-minutes",
+    "rename-partial-files",
+    "rpc-version",
+    "rpc-version-minimum",
+    "script-torrent-done-enabled",
+    "script-torrent-done-filename",
+    "seed-queue-enabled",
+    "seed-queue-size",
+    "seedRatioLimit",
+    "seedRatioLimited",
+    "start-added-torrents",
+    "trash-original-torrent-files",
+    "units",
+    "utp-enabled"
+  ]
+
   def initialize(opts)
     @url = opts[:url]
+    @with_extra = opts[:with_extra] || false
     @fields = opts[:fields] || TORRENT_FIELDS
+    if @with_extra then
+      @fields |= TORRENT_EXTRA_FIELDS
+    end
     @basic_auth = { :username => opts[:username], :password => opts[:password] } if opts[:username]
     @session_id = "NOT-INITIALIZED"
     @debug_mode = opts[:debug_mode] || false
@@ -68,6 +162,31 @@ class TransmissionApi::Client
     response["arguments"]["torrent-added"]
   end
 
+  def start(id)
+    log "start_torrent: #{id}"
+
+    response =
+      post(
+        :method => "torrent-start",
+        :arguments => {
+          :ids => [id]
+        }
+      )
+  end
+
+  def stop(id)
+    log "stop_torrent: #{id}"
+
+    response =
+      post(
+        :method => "torrent-stop",
+        :arguments => {
+          :ids => [id]
+        }
+      )
+    response
+  end
+
   def destroy(id)
     log "remove_torrent: #{id}"
 
@@ -78,6 +197,29 @@ class TransmissionApi::Client
           :ids => [id],
           :"delete-local-data" => true
         }
+      )
+
+    response
+  end
+
+  def config_get
+    log "load_config"
+
+    response =
+      post(
+        :method => "session-get",
+      )
+
+    response["arguments"]
+  end
+
+  def config_set(config)
+    log "set_config #{config}"
+
+    response =
+      post(
+        :method => "session-set",
+        :arguments => config
       )
 
     response

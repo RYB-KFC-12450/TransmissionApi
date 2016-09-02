@@ -50,7 +50,8 @@ class TransmissionApi::Client
     "haveValid",
     "peers",
     "startDate",
-    "trackerStats"
+    "trackerStats",
+    "hashString"
   ]
 
   SESSION_FIELDS = [
@@ -187,7 +188,7 @@ class TransmissionApi::Client
     response
   end
 
-  def destroy(id)
+  def destroy(id, trashdata = false)
     log "remove_torrent: #{id}"
 
     response =
@@ -195,7 +196,7 @@ class TransmissionApi::Client
         :method => "torrent-remove",
         :arguments => {
           :ids => [id],
-          :"delete-local-data" => true
+          :"delete-local-data" => trashdata
         }
       )
 

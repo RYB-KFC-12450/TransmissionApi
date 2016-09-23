@@ -35,7 +35,8 @@ Or install it yourself as:
     torrent = transmission_api_client.find(id)
     torrent = transmission_api_client.create("http://torrent.com/nice_pic.torrent")
     transmission_api_client.destroy(id)
-
+    transmission_api_client.config_get
+    transmission_api_client.config_set({"speed-limit-down-enabled" => true})
 ## State
 
 Version experimental, not use in production.

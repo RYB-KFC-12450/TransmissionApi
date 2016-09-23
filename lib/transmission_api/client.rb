@@ -149,6 +149,12 @@ class TransmissionApi::Client
     response["arguments"]["torrents"].first
   end
 
+  def find_by_hash(hash)
+    log "get_torrent_by_hash#{hash}"
+    response = all
+    response["arguments"]["torrents"].select{| torrent | torrent.hashString == hash}
+  end
+  
   def create(filename)
     log "add_torrent: #{filename}"
 
@@ -159,7 +165,6 @@ class TransmissionApi::Client
           :filename => filename
         }
       )
-
     response["arguments"]["torrent-added"]
   end
 

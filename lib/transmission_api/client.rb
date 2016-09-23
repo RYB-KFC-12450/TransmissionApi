@@ -152,9 +152,9 @@ class TransmissionApi::Client
   def find_by_hash(hash)
     log "get_torrent_by_hash#{hash}"
     response = all
-    response["arguments"]["torrents"].select{| torrent | torrent.hashString == hash}
+    response.select{| torrent | torrent["hashString"] == hash}.first
   end
-  
+
   def create(filename)
     log "add_torrent: #{filename}"
 

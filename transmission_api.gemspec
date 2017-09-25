@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = TransmissionApi::VERSION
 
-  gem.add_dependency "httparty", "0.9.0"
+  gem.add_dependency "httparty", "0.15.6"
 
   gem.add_development_dependency "mocha", "~> 1.1.0"
   gem.add_development_dependency "minitest", "~> 5.4.0"

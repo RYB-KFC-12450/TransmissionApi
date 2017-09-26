@@ -16,7 +16,7 @@ class TransmissionApi::Client
     "rateDownload",
     "rateUpload",
     "percentDone",
-    "hashString"
+    "hashString",
     "files"
   ]
 

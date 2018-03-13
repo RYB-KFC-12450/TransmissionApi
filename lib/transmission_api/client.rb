@@ -144,7 +144,7 @@ class TransmissionApi::Client
     )
     torrent_ids["arguments"]["torrents"].each do | t |
       torrent = find(t['id'])
-      yield(torrent)
+      yield(torrent["arguments"]["torrents"])
     end
   end
 

@@ -143,7 +143,7 @@ class TransmissionApi::Client
       }
     )
     torrent_ids.each do | t |
-      torrent = this.find(t.id)
+      torrent = find(t.id)
       yield(torrent)
     end
   end

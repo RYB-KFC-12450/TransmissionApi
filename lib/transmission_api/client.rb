@@ -142,8 +142,8 @@ class TransmissionApi::Client
         :fields => ["id"]
       }
     )
-    torrent_ids.each do | t |
-      torrent = find(t["id"].to_i)
+    torrent_ids["arguments"]["torrents"].each do | t |
+      torrent = find(t['id'])
       yield(torrent)
     end
   end

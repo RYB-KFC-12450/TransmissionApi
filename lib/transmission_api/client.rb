@@ -135,6 +135,19 @@ class TransmissionApi::Client
     response["arguments"]["torrents"]
   end
 
+  def find_each
+    torrent_ids = post(
+      :method => "torrent-get",
+      :arguments => {
+        :fields => ["id"]
+      }
+    )
+    torrent_ids.each do | t |
+      torrent = this.find(t.id)
+      yield(torrent)
+    end
+  end
+
   def find(id)
     log "get_torrent: #{id}"
 

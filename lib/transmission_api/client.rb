@@ -131,12 +131,8 @@ class TransmissionApi::Client
     @debug_mode = opts[:debug_mode] || false
   end
 
-  def all(opts = {})
+  def all
     log "get_torrents"
-
-    unless opts[:fields].nil? then
-      fields = opts[:fields]
-    end
 
     response = post(
         :method => "torrent-get",

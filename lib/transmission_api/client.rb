@@ -34,7 +34,7 @@ class TransmissionApi::Client
     "error",
     "errorString",
     "eta",
-    "isFinished"
+    "isFinished",
     "isStalled",
     "leftUntilDone",
     "metadataPercentComplete",

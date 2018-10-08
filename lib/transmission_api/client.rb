@@ -7,6 +7,15 @@ class TransmissionApi::Client
   attr_accessor :debug_mode
   attr_accessor :with_extra
 
+  STATUS_STOPPED       : 0  # Torrent is stopped
+  STATUS_CHECK_WAIT    : 1  # Queued to check files
+  STATUS_CHECK         : 2  # Checking files
+  STATUS_DOWNLOAD_WAIT : 3  # Queued to download
+  STATUS_DOWNLOAD      : 4  # Downloading
+  STATUS_SEED_WAIT     : 5  # Queued to seed
+  STATUS_SEED          : 6  # Seeding
+  STATUS_ISOLATED      : 7  # Torrent can't find peers
+
   TORRENT_FIELDS = [
     "id",
     "name",

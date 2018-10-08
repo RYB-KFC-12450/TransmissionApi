@@ -134,7 +134,7 @@ class TransmissionApi::Client
   def all(opts = {})
     log "get_torrents"
 
-    unless opts[:fields].nil? do
+    unless opts[:fields].nil? then
       fields = opts[:fields]
     end
 

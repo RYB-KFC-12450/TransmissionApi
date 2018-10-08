@@ -12,7 +12,7 @@ class TransmissionApi::Client
     "name",
     "totalSize",
     "addedDate",
-    "isFinished",
+    "status",
     "rateDownload",
     "rateUpload",
     "percentDone",
@@ -25,6 +25,7 @@ class TransmissionApi::Client
     "error",
     "errorString",
     "eta",
+    "isFinished"
     "isStalled",
     "leftUntilDone",
     "metadataPercentComplete",
@@ -121,11 +122,14 @@ class TransmissionApi::Client
     @debug_mode = opts[:debug_mode] || false
   end
 
-  def all
+  def all(opts = {})
     log "get_torrents"
 
-    response =
-      post(
+    unless opts[:fields].nil? do
+      fields = opts[:fields]
+    end
+
+    response = post(
         :method => "torrent-get",
         :arguments => {
           :fields => fields
